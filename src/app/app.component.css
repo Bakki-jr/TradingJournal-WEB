@@ -1,0 +1,11 @@
+#login-wrapper {
+    background: #222f35;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+/* background-size: cover; */
+/* background:url('../assets/images/backgroundImages/pexels-photo-1509428.jpeg') no-repeat; */

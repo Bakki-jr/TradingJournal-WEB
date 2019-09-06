@@ -1,0 +1,61 @@
+<mat-card id="login-card-wrapper">
+  <mat-card-title>{{isUserAtSignIn ? 'Login' : 'SignUp'}}</mat-card-title>
+  <img mat-card-image src="assets/images/user-circle-solid.svg" id="lock">
+  <mat-card-content>
+    <span class="error" *ngIf="isErrorPresent">{{ error }}</span>
+  </mat-card-content>
+  <mat-card-content *ngIf="isUserAtSignIn">
+    <form [formGroup]="loginForm">
+      <p>
+        <mat-form-field>
+          <input formControlName="email" type="email" matInput placeholder="Email">
+        </mat-form-field>
+      </p>
+
+      <p>
+        <mat-form-field>
+          <input formControlName="password" type="password" matInput placeholder="Password">
+        </mat-form-field>
+      </p>
+      <div class="mar-btm-20px">
+        <button class="button" type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid" (click)="singInWithEmail()">Login</button>
+      </div>
+      <div class="mar-btm-20px">
+        <button mat-stroked-button color="primary" (click)="googleSingIn()" id="google">Login With Google</button>
+      </div>
+      <div>
+        <!-- <a routerLink="/signup" routerLinkActive="active" class="alc">No account? <strong>Create one here</strong></a> -->
+        <a (click)="goToSingUpFrom()" class="alc"><u>No account? <strong>Create one here</strong></u></a>
+      </div>
+      <div *ngIf="isUserAuth" (click)="logout()">logout</div>
+
+    </form>
+  </mat-card-content>
+  <!-- Sign Up Wrapper-->
+  <mat-card-content *ngIf="!isUserAtSignIn">
+      <form [formGroup]="signUpForm">
+        <p>
+          <mat-form-field>
+            <input formControlName="email" type="email" matInput placeholder="Email">
+          </mat-form-field>
+        </p>
+  
+        <p>
+          <mat-form-field>
+            <input formControlName="password" type="password" matInput placeholder="Password">
+          </mat-form-field>
+        </p>
+        <div class="mar-btm-20px">
+          <button class="button" type="submit" mat-raised-button color="primary" [disabled]="signUpForm.invalid" (click)="singUpWithEmail()">signUp</button>
+        </div>
+        <div (click)="goBack()" class="alc"><strong><u>Go Back</u></strong>
+        </div>
+      </form>
+    </mat-card-content>
+</mat-card>
+
+<mat-card id="quote-wrapper">
+  <mat-spinner *ngIf="!israndomQuoteGenerated" class="spinner"></mat-spinner>
+  <p *ngIf="israndomQuoteGenerated" id="quote-content"><q> {{randomQuote.quote}} </q></p>
+  <p *ngIf="israndomQuoteGenerated" id="quote-author">~ {{randomQuote.trader}}</p>
+</mat-card>
