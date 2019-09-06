@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase';
-import { AngularFirestore } from "@angular/fire/firestore";
+import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 @Component({
@@ -14,13 +14,11 @@ export class LoginOptionsComponent implements OnInit {
   userDetails: auth.UserCredential;
   quotesArray: any;
   randomQuote: any;
-  israndomQuoteGenerated: boolean = false;
-  isErrorPresent: boolean = false; 
+  israndomQuoteGenerated = false;
+  isErrorPresent = false;
   error: any;
-  isUserAtSignIn: boolean = true;
-  isUserAuth: boolean = false;
-  
-  
+  isUserAtSignIn = true;
+  isUserAuth = false;
   loginForm = new FormGroup({
     email: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
@@ -31,16 +29,17 @@ export class LoginOptionsComponent implements OnInit {
     password: new FormControl('', Validators.required),
   });
 
-  constructor(public afAuth: AngularFireAuth, public db: AngularFirestore) { }
+  constructor(public afAuth: AngularFireAuth, public db: AngularFirestore) {
+   }
 
   ngOnInit() {
     this.afAuth.authState
       .subscribe((user) => {
         console.log(user);
-        if(user != null)
-        this.isUserAuth = true;
+        if (user != null) {
+          this.isUserAuth = true;
+        }
       });
-    
     firebase.database().ref('tradingQuotes').once('value')
       .then(
         (snapshot) => {
@@ -55,13 +54,13 @@ export class LoginOptionsComponent implements OnInit {
   googleSingIn() {
     this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider())
       .then(
-        (userDetails)=> {
+        (userDetails) => {
         console.log(userDetails);
         this.userDetails = userDetails;
       })
       .catch(
-        (error)=> {
-          console.log(error, "Google-sign-in")
+        (error) => {
+          console.log(error, 'Google-sign-in');
           this.isErrorPresent = true;
           this.error = error;
         }
@@ -69,12 +68,14 @@ export class LoginOptionsComponent implements OnInit {
   }
 
   singInWithEmail() {
-    if(this.loginForm.valid) {
-      this.afAuth.auth.signInWithEmailAndPassword(this.loginForm.controls['email'].value, this.loginForm.controls['password'].value)
+    if (this.loginForm.valid) {
+      const email = 'email';
+      const password = 'password';
+      this.afAuth.auth.signInWithEmailAndPassword(this.loginForm.controls[email].value, this.loginForm.controls[password].value)
         .then((userCreds) => console.log(userCreds))
         .catch(
           (err) => {
-            //console.log(err);
+            // console.log(err);
             this.isErrorPresent = true;
             this.error = err;
           }
@@ -85,9 +86,11 @@ export class LoginOptionsComponent implements OnInit {
   goToSingUpFrom() {
     this.isUserAtSignIn = false;
   }
-  
+
   singUpWithEmail() {
-    this.afAuth.auth.createUserWithEmailAndPassword(this.signUpForm.controls['email'].value, this.signUpForm.controls['password'].value)
+    const email = 'email';
+    const password = 'password';
+    this.afAuth.auth.createUserWithEmailAndPassword(this.signUpForm.controls[email].value, this.signUpForm.controls[password].value)
       .then((userCreds) => console.log(userCreds))
       .catch(
         (err) => {
@@ -105,6 +108,4 @@ export class LoginOptionsComponent implements OnInit {
     this.afAuth.auth.signOut();
     this.isUserAuth = false;
   }
-
-
 }
